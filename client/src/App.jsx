@@ -12,13 +12,14 @@ import UserForm from './components/UserForm';
 import './App.css';
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState('list'); // 'list' | 'add' | 'search'
+  const [currentPage, setCurrentPage] = useState('search'); // 'list' | 'add' | 'search'
   const [users, setUsers] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [notification, setNotification] = useState(null);
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
 
   // Helper to show auto-dismissing notifications
   const showNotification = (message, type = 'success') => {
@@ -26,6 +27,26 @@ export default function App() {
     setTimeout(() => {
       setNotification(null);
     }, 4000);
+  };
+
+  const handleAdminAccess = () => {
+    if (isAdminLoggedIn) {
+      setIsAdminLoggedIn(false);
+      showNotification('Admin session ended.', 'success');
+      return;
+    }
+
+    const password = window.prompt('Enter admin password');
+    if (!password) {
+      return;
+    }
+
+    if (password.trim().toLowerCase() === 'admin123') {
+      setIsAdminLoggedIn(true);
+      showNotification('Admin access granted.', 'success');
+    } else {
+      showNotification('Incorrect admin password.', 'error');
+    }
   };
 
   // Load all users from database
@@ -149,9 +170,14 @@ export default function App() {
   return (
     <div className="app-container">
       <header className="app-header">
-        <div className="header-title-section">
-          <h1>Accounts Department Portal</h1>
-          <p className="subtitle">Confidential Internal Utility & User Registry</p>
+        <div className="header-top-row">
+          <div className="header-title-section">
+            <h1>Accounts Department Portal</h1>
+            <p className="subtitle">Confidential Internal Utility & User Registry</p>
+          </div>
+          <button type="button" className="admin-link" onClick={handleAdminAccess}>
+            {isAdminLoggedIn ? 'Admin Panel' : 'Admin Login'}
+          </button>
         </div>
         
         <nav className="app-navigation">

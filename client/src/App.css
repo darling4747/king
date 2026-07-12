@@ -18,8 +18,32 @@
   gap: 1.5rem;
 }
 
+.header-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
 .header-title-section {
   text-align: left;
+}
+
+.admin-link {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.25rem 0;
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+}
+
+.admin-link:hover {
+  color: var(--text-h);
 }
 
 .app-header h1 {
