@@ -32,6 +32,7 @@ export default function App() {
   const handleAdminAccess = () => {
     if (isAdminLoggedIn) {
       setIsAdminLoggedIn(false);
+      setCurrentPage('search');
       showNotification('Admin session ended.', 'success');
       return;
     }
@@ -43,7 +44,8 @@ export default function App() {
 
     if (password.trim().toLowerCase() === 'admin123') {
       setIsAdminLoggedIn(true);
-      showNotification('Admin access granted.', 'success');
+      setCurrentPage('list');
+      showNotification('Admin access granted. You can manage job seekers now.', 'success');
     } else {
       showNotification('Incorrect admin password.', 'error');
     }
@@ -184,14 +186,26 @@ export default function App() {
           <button 
             type="button" 
             className={`nav-link ${currentPage === 'list' ? 'active' : ''}`}
-            onClick={() => setCurrentPage('list')}
+            onClick={() => {
+              if (!isAdminLoggedIn) {
+                showNotification('Please sign in as admin to access the registry.', 'error');
+                return;
+              }
+              setCurrentPage('list');
+            }}
           >
             User Listing Registry
           </button>
           <button 
             type="button" 
             className={`nav-link ${currentPage === 'add' ? 'active' : ''}`}
-            onClick={handleAddModeClick}
+            onClick={() => {
+              if (!isAdminLoggedIn) {
+                showNotification('Please sign in as admin to add a job seeker.', 'error');
+                return;
+              }
+              handleAddModeClick();
+            }}
           >
             {selectedUser ? 'Edit User Account' : 'Add User Account'}
           </button>
@@ -217,7 +231,14 @@ export default function App() {
       <main className="app-main">
         {loading && <div className="page-loader">Loading Registry Data...</div>}
 
-        {currentPage === 'list' && (
+        {!isAdminLoggedIn && currentPage !== 'search' && (
+          <div className="page-section animate-slide-up">
+            <h2>Admin access required</h2>
+            <p>Please use the Admin Login link in the top-right corner to manage job seekers.</p>
+          </div>
+        )}
+
+        {isAdminLoggedIn && currentPage === 'list' && (
           <div className="page-section animate-slide-up">
             <div className="section-header">
               <h2>User Listing Registry</h2>
@@ -233,7 +254,7 @@ export default function App() {
           </div>
         )}
 
-        {currentPage === 'add' && (
+        {isAdminLoggedIn && currentPage === 'add' && (
           <div className="page-section max-width-form animate-slide-up">
             <UserForm
               selectedUser={selectedUser}
