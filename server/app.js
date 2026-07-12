@@ -18,6 +18,13 @@ app.use(express.urlencoded({ extended: true }));
 // Mount the user routes
 app.use('/api/users', userRoutes);
 
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Backend is running',
+    version: 'v2',
+  });
+});
+
 // Root health check route
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'healthy', timestamp: new Date() });
