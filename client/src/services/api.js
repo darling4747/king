@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Configure Axios instance
 const API = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: "https://emperor-backend.onrender.com/api",
   headers: {
     'Content-Type': 'application/json'
   }
