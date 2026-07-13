@@ -9,10 +9,10 @@ const isValidName = (name) => {
   return nameRegex.test(trimmed);
 };
 
-// Helper to validate phone: optional '+' prefix followed by 8-15 digits, no other characters
+// Helper to validate phone: exactly 12 digits, no other characters
 const isValidPhone = (phone) => {
   if (typeof phone !== 'string') return false;
-  const phoneRegex = /^\+?[0-9]{8,15}$/;
+  const phoneRegex = /^\d{12}$/;
   return phoneRegex.test(phone);
 };
 
