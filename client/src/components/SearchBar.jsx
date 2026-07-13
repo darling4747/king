@@ -14,10 +14,9 @@ export default function SearchBar({ onSearch }) {
       return;
     }
 
-    // Strict E.164 phone check: optional '+' followed by 8 to 15 digits, no special characters or spaces
-    const phoneRegex = /^\+?[0-9]{8,15}$/;
+    const phoneRegex = /^\d{12}$/;
     if (!phoneRegex.test(query)) {
-      setValidationError("Search query must be between 8 and 15 digits (excluding optional '+') and contain no spaces or formatting characters.");
+      setValidationError('Please enter exactly 12 digits.');
       return;
     }
 
@@ -37,10 +36,14 @@ export default function SearchBar({ onSearch }) {
         <div className="search-input-wrapper">
           <input
             type="text"
-            placeholder="Enter phone number..."
+            inputMode="numeric"
+            pattern="[0-9]*"
+            maxLength={12}
+            placeholder="Enter 12-digit phone number..."
             value={phone}
             onChange={(e) => {
-              setPhone(e.target.value);
+              const digitsOnly = e.target.value.replace(/\D/g, '').slice(0, 12);
+              setPhone(digitsOnly);
               if (validationError) setValidationError('');
             }}
             className="search-input jala-input"

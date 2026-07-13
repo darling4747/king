@@ -9,10 +9,10 @@ const isValidName = (name) => {
   return nameRegex.test(trimmed);
 };
 
-// Helper to validate phone: optional '+' prefix followed by 8-15 digits, no other characters
+// Helper to validate phone: exactly 12 digits, no other characters
 const isValidPhone = (phone) => {
   if (typeof phone !== 'string') return false;
-  const phoneRegex = /^\+?[0-9]{8,15}$/;
+  const phoneRegex = /^\d{12}$/;
   return phoneRegex.test(phone);
 };
 
@@ -81,7 +81,7 @@ exports.createUser = async (req, res) => {
   if (!phone || typeof phone !== 'string' || phone.trim() === '') {
     errors.push('Phone number is required.');
   } else if (!isValidPhone(phone.trim())) {
-    errors.push("Phone number must be between 8 and 15 digits (excluding optional '+') and contain no spaces or invalid characters.");
+    errors.push('Phone number must be exactly 12 digits and contain no spaces or invalid characters.');
   }
 
   // Email Validation
@@ -189,7 +189,7 @@ exports.updateUser = async (req, res) => {
   if (!phone || typeof phone !== 'string' || phone.trim() === '') {
     errors.push('Phone number is required.');
   } else if (!isValidPhone(phone.trim())) {
-    errors.push("Phone number must be between 8 and 15 digits (excluding optional '+') and contain no spaces or invalid characters.");
+    errors.push('Phone number must be exactly 12 digits and contain no spaces or invalid characters.');
   }
 
   // Email Validation

@@ -35,9 +35,10 @@ export default function UserForm({ selectedUser, onSubmit, onCancel }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    const nextValue = name === 'phone' ? value.replace(/\D/g, '').slice(0, 12) : value;
     setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: nextValue
     }));
   };
 
@@ -57,14 +58,14 @@ export default function UserForm({ selectedUser, onSubmit, onCancel }) {
       }
     }
 
-    // Phone Validation: optional '+' and 8-15 digits, reject invalid characters
+    // Phone Validation: exactly 12 digits, reject invalid characters
     const phoneTrimmed = formData.phone.trim();
     if (!phoneTrimmed) {
       errs.push('Phone number is required.');
     } else {
-      const phoneRegex = /^\+?[0-9]{8,15}$/;
+      const phoneRegex = /^\d{12}$/;
       if (!phoneRegex.test(phoneTrimmed)) {
-        errs.push("Phone number must be between 8 and 15 digits (excluding optional '+') and contain no spaces or invalid characters.");
+        errs.push('Phone number must be exactly 12 digits and contain no spaces or invalid characters.');
       }
     }
 
@@ -170,9 +171,12 @@ export default function UserForm({ selectedUser, onSubmit, onCancel }) {
             type="text"
             id="phone"
             name="phone"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            maxLength={12}
             value={formData.phone}
             onChange={handleChange}
-            placeholder="+14155552671"
+            placeholder="Enter 12-digit phone number"
             required
           />
         </div>
