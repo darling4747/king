@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import RootLayout from '../layouts/RootLayout';
 import Loader from '../components/common/Loader';
 
@@ -18,7 +18,8 @@ export default function AppRoutes() {
     <Suspense fallback={<Loader />}>
       <Routes>
         <Route index element={<Home />} />
-        <Route path="admin" element={<AdminLogin />} />
+        <Route path="login" element={<AdminLogin />} />
+        <Route path="admin" element={<Navigate to="/login" replace />} />
 
         <Route element={<RootLayout />}>
           <Route path="about" element={<About />} />

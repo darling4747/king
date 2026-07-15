@@ -37,7 +37,7 @@ export default function Home() {
           <div className="jala-home-spacer" />
           <div className="jala-home-column">
             <form className="jala-home-form" method="post" autoComplete="off" onSubmit={handleSubmit}>
-              <Link to="/admin" aria-label="Open admin login">
+              <Link to="/login" aria-label="Open login">
                 <img src={logo} alt="JALA Connect" className="jala-home-logo" />
               </Link>
 
@@ -90,3 +90,4 @@ export default function Home() {
     </>
   );
 }
+
