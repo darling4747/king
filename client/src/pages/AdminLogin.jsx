@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import SEO from '../components/SEO';
 
 const ADMIN_EMAIL = 'admin@magnus.com';
 const ADMIN_PASSWORD = 'Admin@123';
+const AUTH_KEY = 'magnus_admin_auth';
 
 export default function AdminLogin() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState(ADMIN_EMAIL);
   const [password, setPassword] = useState(ADMIN_PASSWORD);
   const [message, setMessage] = useState('');
@@ -13,7 +16,9 @@ export default function AdminLogin() {
     event.preventDefault();
 
     if (email.trim() === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+      localStorage.setItem(AUTH_KEY, 'true');
       setMessage('Done. Admin login successful.');
+      navigate('/dashboard');
       return;
     }
 
