@@ -8,7 +8,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Magnus HR and JALA Connect Color Palettes
+        // JALA Connect Color Palette
         brand: {
           50: '#f5f3ff',
           100: '#ede9fe',
@@ -39,3 +39,4 @@ export default {
   },
   plugins: [],
 }
+

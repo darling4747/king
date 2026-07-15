@@ -375,8 +375,8 @@ body,
   }
 }
 
-/* Magnus-style admin sign in page */
-.magnus-admin-page {
+/* JALA-style admin sign in page */
+.jala-signin-page {
   align-items: flex-start;
   background: #f8fafc;
   color: #0f172a;
@@ -387,7 +387,7 @@ body,
   padding: 4px;
 }
 
-.magnus-admin-card {
+.jala-signin-card {
   background: #fff;
   box-sizing: border-box;
   min-height: 486px;
@@ -395,7 +395,7 @@ body,
   width: min(100%, 546px);
 }
 
-.magnus-admin-heading h1 {
+.jala-signin-heading h1 {
   color: #061733;
   font-size: 30px;
   font-weight: 800;
@@ -403,34 +403,34 @@ body,
   margin: 0 0 8px;
 }
 
-.magnus-admin-heading p {
+.jala-signin-heading p {
   color: #64748b;
   font-size: 18px;
   line-height: 1.4;
   margin: 0;
 }
 
-.magnus-admin-form {
+.jala-signin-form {
   display: flex;
   flex-direction: column;
   gap: 21px;
   margin-top: 41px;
 }
 
-.magnus-admin-field {
+.jala-signin-field {
   display: flex;
   flex-direction: column;
   gap: 7px;
 }
 
-.magnus-admin-field span {
+.jala-signin-field span {
   color: #0f172a;
   font-size: 18px;
   font-weight: 400;
   line-height: 1.25;
 }
 
-.magnus-admin-field input {
+.jala-signin-field input {
   background: #fff;
   border: 1px solid #dce1ea;
   border-radius: 10px;
@@ -444,17 +444,17 @@ body,
   width: 100%;
 }
 
-.magnus-admin-field input::placeholder {
+.jala-signin-field input::placeholder {
   color: #94a3b8;
   opacity: 1;
 }
 
-.magnus-admin-field input:focus {
+.jala-signin-field input:focus {
   border-color: #2f64e7;
   box-shadow: 0 0 0 3px rgba(47, 100, 231, 0.12);
 }
 
-.magnus-admin-submit {
+.jala-signin-submit {
   background: #2f64e7;
   border: 0;
   border-radius: 10px;
@@ -467,11 +467,11 @@ body,
   width: 100%;
 }
 
-.magnus-admin-submit:hover {
+.jala-signin-submit:hover {
   background: #2857cf;
 }
 
-.magnus-admin-message {
+.jala-signin-message {
   color: #2563eb;
   font-size: 14px;
   font-weight: 600;
@@ -479,7 +479,7 @@ body,
   text-align: center;
 }
 
-.magnus-admin-default {
+.jala-signin-default {
   color: #94a3b8;
   font-size: 16px;
   line-height: 1.4;
@@ -488,28 +488,28 @@ body,
 }
 
 @media (max-width: 560px) {
-  .magnus-admin-page {
+  .jala-signin-page {
     padding: 0;
   }
 
-  .magnus-admin-card {
+  .jala-signin-card {
     min-height: 100vh;
     padding: 34px 24px;
   }
 
-  .magnus-admin-heading h1 {
+  .jala-signin-heading h1 {
     font-size: 28px;
   }
 
-  .magnus-admin-heading p,
-  .magnus-admin-field span,
-  .magnus-admin-field input,
-  .magnus-admin-submit {
+  .jala-signin-heading p,
+  .jala-signin-field span,
+  .jala-signin-field input,
+  .jala-signin-submit {
     font-size: 16px;
   }
 }
 
-/* Magnus HRMS dashboard workflow */
+/* JALA Connect dashboard workflow */
 .hrms-shell {
   background: #f8fafc;
   color: #0f172a;
@@ -1064,3 +1064,5 @@ body,
     gap: 8px;
   }
 }
+
+

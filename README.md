@@ -1,4 +1,4 @@
-# JALA Connect / Magnus Admin
+# JALA Connect / JALA Admin
 
 React frontend and Express backend are kept in the same repository, but deploy as separate services.
 
@@ -14,7 +14,7 @@ Use the `client` folder as the frontend project root.
 
 Default admin login shown on `/admin`:
 
-- Email: `admin@magnus.com`
+- Email: `admin@jalaacademy.com`
 - Password: `Admin@123`
 
 ## Backend deployment
@@ -28,3 +28,4 @@ Use the `server` folder as the backend project root.
 
 Create environment variables from `server/.env.example` in the hosting dashboard.
 Do not commit real `.env` files.
+

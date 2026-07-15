@@ -2,8 +2,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import SEO from '../components/SEO';
 
-const STORAGE_KEY = 'magnus_hrms_data';
-const AUTH_KEY = 'magnus_admin_auth';
+const STORAGE_KEY = 'jala_connect_data';
+const AUTH_KEY = 'jala_admin_auth';
 
 const initialData = {
   departments: [
@@ -32,7 +32,7 @@ const initialData = {
       employeeId: 'MAG-001',
       firstName: 'Aarav',
       lastName: 'Reddy',
-      email: 'aarav.reddy@magnus.com',
+      email: 'aarav.reddy@jalaacademy.com',
       phone: '9876543210',
       department: 'engineering',
       designation: 'Software Engineer',
@@ -47,7 +47,7 @@ const initialData = {
       employeeId: 'MAG-002',
       firstName: 'Meera',
       lastName: 'Sharma',
-      email: 'meera.sharma@magnus.com',
+      email: 'meera.sharma@jalaacademy.com',
       phone: '9123456780',
       department: 'engineering',
       designation: 'QA Engineer',
@@ -262,12 +262,12 @@ export default function AdminPortal({ section = 'dashboard' }) {
 
   return (
     <>
-      <SEO title="Magnus HRMS" description="Magnus HRMS admin dashboard" />
+      <SEO title="JALA Connect" description="JALA Connect admin dashboard" />
       <div className="hrms-shell">
         <aside className="hrms-sidebar">
           <Link to="/dashboard" className="hrms-brand">
             <span className="hrms-brand-mark">M</span>
-            <span>Magnus HRMS</span>
+            <span>JALA Connect</span>
           </Link>
 
           <nav className="hrms-nav">
@@ -288,7 +288,7 @@ export default function AdminPortal({ section = 'dashboard' }) {
           <div className="hrms-user">
             <span className="hrms-user-avatar">MA</span>
             <span>
-              <strong>Magnus Admin</strong>
+              <strong>JALA Admin</strong>
               <small>Admin</small>
             </span>
           </div>
@@ -551,12 +551,13 @@ function Profile() {
       <div className="hrms-card hrms-profile-card">
         <span className="hrms-profile-avatar">MA</span>
         <div>
-          <h2>Magnus Admin</h2>
-          <p>admin@magnus.com</p>
+          <h2>JALA Admin</h2>
+          <p>admin@jalaacademy.com</p>
           <StatusBadge value="active" />
         </div>
       </div>
     </section>
   );
 }
+
 
