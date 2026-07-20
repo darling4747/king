@@ -5,9 +5,28 @@ require('dotenv').config();
 
 const app = express();
 
-// Secure CORS configuration allowing requests only from the specified client URL
+const defaultOrigins = [
+  'http://localhost:5173',
+  'https://accounts-crud-frontend.vercel.app',
+  'https://accounts-crud-admin.vercel.app',
+];
+
+const configuredOrigins = process.env.CLIENT_URL
+  ? process.env.CLIENT_URL.split(',').map((origin) => origin.trim()).filter(Boolean)
+  : [];
+
+const allowedOrigins = Array.from(new Set([...defaultOrigins, ...configuredOrigins]));
+
+// Secure CORS configuration allowing requests from the deployed client apps.
 const corsOptions = {
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+      return;
+    }
+
+    callback(new Error('Not allowed by CORS'));
+  },
   optionsSuccessStatus: 200
 };
 
@@ -21,7 +40,7 @@ app.use('/api/users', userRoutes);
 app.get('/', (req, res) => {
   res.json({
     message: 'Backend is running',
-    version: 'v2',
+    version: 'v3',
   });
 });
 

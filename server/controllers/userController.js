@@ -1,5 +1,11 @@
 const db = require('../config/db');
 
+const VALID_STATUSES = ['Active', 'Placed', 'Inactive', 'On Hold', 'Suspended', 'Expired', 'Blocked', 'Unknown'];
+
+const ensureUsersTable = () => (
+  typeof db.ensureUsersTable === 'function' ? db.ensureUsersTable() : Promise.resolve()
+);
+
 // Helper to validate name: 2-100 chars, only letters, spaces, apostrophes, hyphens, and periods
 const isValidName = (name) => {
   if (typeof name !== 'string') return false;
@@ -9,10 +15,10 @@ const isValidName = (name) => {
   return nameRegex.test(trimmed);
 };
 
-// Helper to validate phone: exactly 12 digits, no other characters
+// Helper to validate phone: 10-12 digits, no other characters
 const isValidPhone = (phone) => {
   if (typeof phone !== 'string') return false;
-  const phoneRegex = /^\d{12}$/;
+  const phoneRegex = /^\d{10,12}$/;
   return phoneRegex.test(phone);
 };
 
@@ -35,6 +41,7 @@ const isValidDate = (dateStr) => {
 // GET /api/users - View all users
 exports.getAllUsers = async (req, res) => {
   try {
+    await ensureUsersTable();
     const [users] = await db.query('SELECT * FROM users ORDER BY id DESC');
     res.status(200).json(users);
   } catch (error) {
@@ -53,10 +60,11 @@ exports.searchUserByPhone = async (req, res) => {
 
   const phoneStr = phone.trim();
   if (!isValidPhone(phoneStr)) {
-    return res.status(400).json({ error: 'Validation Failed', details: ['Invalid search phone number format.'] });
+    return res.status(400).json({ error: 'Validation Failed', details: ['Phone number must be 10-12 digits.'] });
   }
 
   try {
+    await ensureUsersTable();
     const [users] = await db.query('SELECT * FROM users WHERE phone = ?', [phoneStr]);
     res.status(200).json(users);
   } catch (error) {
@@ -81,7 +89,7 @@ exports.createUser = async (req, res) => {
   if (!phone || typeof phone !== 'string' || phone.trim() === '') {
     errors.push('Phone number is required.');
   } else if (!isValidPhone(phone.trim())) {
-    errors.push('Phone number must be exactly 12 digits and contain no spaces or invalid characters.');
+    errors.push('Phone number must be 10-12 digits and contain no spaces or invalid characters.');
   }
 
   // Email Validation
@@ -110,9 +118,8 @@ exports.createUser = async (req, res) => {
   }
 
   // Status Validation
-  const validStatuses = ['Active', 'Inactive', 'Suspended', 'Expired', 'Blocked', 'Unknown'];
-  if (!status || !validStatuses.includes(status)) {
-    errors.push(`Status must be one of: ${validStatuses.join(', ')}.`);
+  if (!status || !VALID_STATUSES.includes(status)) {
+    errors.push(`Status must be one of: ${VALID_STATUSES.join(', ')}.`);
   }
 
   // Message Validation
@@ -128,6 +135,7 @@ exports.createUser = async (req, res) => {
   const normalizedEmail = email.trim().toLowerCase();
 
   try {
+    await ensureUsersTable();
     // Check uniqueness of Phone
     const [existingPhone] = await db.query('SELECT id FROM users WHERE phone = ?', [normalizedPhone]);
     if (existingPhone.length > 0) {
@@ -189,7 +197,7 @@ exports.updateUser = async (req, res) => {
   if (!phone || typeof phone !== 'string' || phone.trim() === '') {
     errors.push('Phone number is required.');
   } else if (!isValidPhone(phone.trim())) {
-    errors.push('Phone number must be exactly 12 digits and contain no spaces or invalid characters.');
+    errors.push('Phone number must be 10-12 digits and contain no spaces or invalid characters.');
   }
 
   // Email Validation
@@ -218,9 +226,8 @@ exports.updateUser = async (req, res) => {
   }
 
   // Status Validation
-  const validStatuses = ['Active', 'Inactive', 'Suspended', 'Expired', 'Blocked', 'Unknown'];
-  if (!status || !validStatuses.includes(status)) {
-    errors.push(`Status must be one of: ${validStatuses.join(', ')}.`);
+  if (!status || !VALID_STATUSES.includes(status)) {
+    errors.push(`Status must be one of: ${VALID_STATUSES.join(', ')}.`);
   }
 
   // Message Validation
@@ -236,6 +243,7 @@ exports.updateUser = async (req, res) => {
   const normalizedEmail = email.trim().toLowerCase();
 
   try {
+    await ensureUsersTable();
     // Verify user exists
     const [existingUser] = await db.query('SELECT id FROM users WHERE id = ?', [id]);
     if (existingUser.length === 0) {
@@ -293,6 +301,7 @@ exports.deleteUser = async (req, res) => {
   const { id } = req.params;
 
   try {
+    await ensureUsersTable();
     const [existingUser] = await db.query('SELECT id FROM users WHERE id = ?', [id]);
     if (existingUser.length === 0) {
       return res.status(404).json({ error: 'Not Found', details: ['User account not found.'] });

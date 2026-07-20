@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
+import { searchCandidateByPhone } from '../api/candidates';
 import { lookupUser } from '../constants/mockUsers';
 import logo from '../assets/jala/logo.png';
 
@@ -8,8 +8,9 @@ export default function Home() {
   const [phone, setPhone] = useState('');
   const [record, setRecord] = useState(null);
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const cleanPhone = phone.trim().replace(/\D/g, '');
@@ -20,9 +21,21 @@ export default function Home() {
       return;
     }
 
-    const foundRecord = lookupUser(cleanPhone);
-    setRecord(foundRecord || null);
-    setMessage(foundRecord ? '' : 'No record found');
+    setLoading(true);
+
+    try {
+      const candidates = await searchCandidateByPhone(cleanPhone);
+      const foundRecord = Array.isArray(candidates) ? candidates[0] : null;
+
+      setRecord(foundRecord || null);
+      setMessage(foundRecord ? '' : 'No record found');
+    } catch {
+      const fallbackRecord = lookupUser(cleanPhone);
+      setRecord(fallbackRecord || null);
+      setMessage(fallbackRecord ? '' : 'No record found');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -37,9 +50,7 @@ export default function Home() {
           <div className="jala-home-spacer" />
           <div className="jala-home-column">
             <form className="jala-home-form" method="post" autoComplete="off" onSubmit={handleSubmit}>
-              <Link to="/login" aria-label="Open login">
-                <img src={logo} alt="JALA Connect" className="jala-home-logo" />
-              </Link>
+              <img src={logo} alt="JALA Connect" className="jala-home-logo" />
 
               <div className="jala-home-input-container">
                 <input
@@ -55,8 +66,8 @@ export default function Home() {
                 />
               </div>
 
-              <button type="submit" className="jala-home-submit">
-                SEARCH HERE
+              <button type="submit" className="jala-home-submit" disabled={loading}>
+                {loading ? 'SEARCHING...' : 'SEARCH HERE'}
               </button>
 
               {message && <div className="jala-home-message">{message}</div>}
@@ -77,7 +88,7 @@ export default function Home() {
                   </div>
                   <div className="jala-home-result-row">
                     <span>Joined</span>
-                    <strong>{record.joining_date}</strong>
+                    <strong>{String(record.joining_date || '').slice(0, 10)}</strong>
                   </div>
                   <p>{record.message}</p>
                 </div>
@@ -90,4 +101,3 @@ export default function Home() {
     </>
   );
 }
-

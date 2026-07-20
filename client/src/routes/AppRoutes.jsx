@@ -12,6 +12,9 @@ const Contact = lazy(() => import('../pages/Contact'));
 const PrivacyPolicy = lazy(() => import('../pages/PrivacyPolicy'));
 const Terms = lazy(() => import('../pages/Terms'));
 const AdminLogin = lazy(() => import('../pages/AdminLogin'));
+const CandidateAdmin = lazy(() => import('../pages/CandidateAdmin'));
+const CandidateAdminLogin = lazy(() => import('../pages/CandidateAdmin').then((module) => ({ default: module.CandidateAdminLogin })));
+const CandidateAdminGuard = lazy(() => import('../pages/CandidateAdmin').then((module) => ({ default: module.CandidateAdminGuard })));
 const NotFound = lazy(() => import('../pages/NotFound'));
 
 const adminPage = (section) => (
@@ -21,12 +24,16 @@ const adminPage = (section) => (
 );
 
 export default function AppRoutes() {
+  const adminEntry = import.meta.env.VITE_ADMIN_ENTRY === 'true';
+
   return (
     <Suspense fallback={<Loader />}>
       <Routes>
-        <Route index element={<Home />} />
+        <Route index element={adminEntry ? <Navigate to="/candidate-login" replace /> : <Home />} />
         <Route path="login" element={<AdminLogin />} />
-        <Route path="admin" element={<Navigate to="/login" replace />} />
+        <Route path="admin" element={<AdminLogin />} />
+        <Route path="candidate-login" element={<CandidateAdminLogin />} />
+        <Route path="candidate-admin" element={<CandidateAdminGuard><CandidateAdmin /></CandidateAdminGuard>} />
         <Route path="dashboard" element={adminPage('dashboard')} />
         <Route path="employees" element={adminPage('employees')} />
         <Route path="departments" element={adminPage('departments')} />
